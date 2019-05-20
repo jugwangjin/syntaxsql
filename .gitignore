@@ -1,0 +1,4 @@
+data/
+generated_datasets/
+glove/
+__pycache__/

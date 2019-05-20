@@ -15,7 +15,7 @@ TEST_DATA=data\\dev.json
 
 
 # - aug
-mkdir generated_datasets\\generated_data\\saved_models_hs=full_tbl=std
+# mkdir generated_datasets\\generated_data\\saved_models_hs=full_tbl=std
 SAVE_PATH=generated_datasets\\generated_data\\saved_models_hs=full_tbl=std
 CUDA_VISIBLE_DEVICES=0,1,2,3 python test.py \
     --test_data_path  ${TEST_DATA} \
