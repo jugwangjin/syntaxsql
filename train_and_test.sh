@@ -38,133 +38,133 @@ log_dir=${save_dir}\\train_log
 mkdir -p ${save_dir}
 mkdir -p ${log_dir}
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=col
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=col
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=multi_sql
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=multi_sql
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=keyword
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=keyword
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=op
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=op
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=agg
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=agg
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=root_tem
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=root_tem
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=des_asc
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=des_asc
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=having
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=having
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-export CUDA_VISIBLE_DEVICES=0,1,2,3
-module=andor
-CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
-  --data_root    ${data_root} \
-  --save_dir     ${save_dir} \
-  --history_type ${hs} \
-  --table_type   ${tbl} \
-  --train_component ${module} \
-  --epoch        ${epoch} \
-  ${toy} \
-  ${pretrain} \
-  > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
-  2>&1 & wait
+# export CUDA_VISIBLE_DEVICES=0,1,2,3
+# module=andor
+# CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
+#   --data_root    ${data_root} \
+#   --save_dir     ${save_dir} \
+#   --history_type ${hs} \
+#   --table_type   ${tbl} \
+#   --train_component ${module} \
+#   --epoch        ${epoch} \
+#   ${toy} \
+#   ${pretrain} \
+#   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
+#   2>&1 & wait
 
-
+save_dir=generated_datasets\\generated_data\\saved_models_hs=no_tbl=no_epoch5--toy_2019-05-21-19-53-31
 TEST_DATA=data\\dev.json
 CUDA_VISIBLE_DEVICES=0,1,2,3 python test.py \
     --test_data_path  ${TEST_DATA} \
@@ -172,7 +172,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python test.py \
     --output_path     ${save_dir}/dev_result.txt \
     --history_type    full \
     --table_type      std \
-     > ${SAVE_PATH}\\dev_result.out.txt 2>&1 & wait
+     > ${save_dir}\\dev_result.out.txt 2>&1 & wait
 
 
 
@@ -318,7 +318,7 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python test.py \
     --output_path     ${save_dir}/dev_result.txt \
     --history_type    full \
     --table_type      std \
-     > ${SAVE_PATH}\\dev_result.out.txt 2>&1 & wait
+     > ${save_dir}\\dev_result.out.txt 2>&1 & wait
 
 
 # export CUDA_VISIBLE_DEVICES=0,1,2,3

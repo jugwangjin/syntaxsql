@@ -28,10 +28,10 @@ class KeyWordPredictor(nn.Module):
                 num_layers=N_depth, batch_first=True,
                 dropout=0.3, bidirectional=True)
 
-        # # decode
-        # self.q_lstm_rev = nn.LSTM(input_size=N_word, hidden_size=N_h//2,
-        #         num_layers=N_depth, batch_first=True,
-        #         dropout=0.3, bidirectional=True)
+        # decode
+        self.q_lstm_rev = nn.LSTM(input_size=N_word, hidden_size=N_h//2,
+                num_layers=N_depth, batch_first=True,
+                dropout=0.3, bidirectional=True)
 
 
         self.q_num_att = nn.Linear(N_h, N_h)
