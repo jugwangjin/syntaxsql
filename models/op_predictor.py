@@ -26,6 +26,11 @@ class OpPredictor(nn.Module):
                 num_layers=N_depth, batch_first=True,
                 dropout=0.3, bidirectional=True)
 
+        # decode
+        self.q_lstm_rev = nn.LSTM(input_size=N_word, hidden_size=N_h//2,
+                num_layers=N_depth, batch_first=True,
+                dropout=0.3, bidirectional=True)
+
         self.q_num_att = nn.Linear(N_h, N_h)
         self.hs_num_att = nn.Linear(N_h, N_h)
         self.op_num_out_q = nn.Linear(N_h, N_h)
@@ -48,6 +53,27 @@ class OpPredictor(nn.Module):
         self.sigm = nn.Sigmoid()
         if gpu:
             self.cuda()
+
+    def encode(self, q_emb_var, q_len):
+        q_enc, _ = run_lstm(self.q_lstm, q_emb_var, q_len)
+        return q_enc
+
+    def decode(self, q_enc, q_len):
+        q_dec, _ = run_lstm(self.q_lstm_rev, q_enc, q_len)
+        return q_dec
+
+    def autoencode(self, q_emb_var, q_len):
+        encoded_input = self.encode(q_emb_var, q_len)
+        decoded_output = self.decode(encoded_input, q_len)
+        return decoded_output
+
+    def autoencodeloss(self, decoded_output, q_emb_var):
+        loss = 0
+        B = len(q_emb_var)
+        decoded_output = decoded_output
+        q_emb_var = q_emb_var
+        loss += F.mse_loss(decoded_output, q_emb_var)
+        return loss
 
     def forward(self, q_emb_var, q_len, hs_emb_var, hs_len, col_emb_var, col_len, col_name_len, gt_col):
         max_q_len = max(q_len)
@@ -126,6 +152,7 @@ class OpPredictor(nn.Module):
         # loss for the op number
         truth_num = [len(t)-1 for t in truth] #num_score 0 maps to 1 in truth
         data = torch.from_numpy(np.array(truth_num))
+        data = data.long()
         truth_num_var = Variable(data.cuda())
         loss += self.CE(op_num_score, truth_num_var)
         # loss for op

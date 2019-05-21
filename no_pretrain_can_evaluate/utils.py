@@ -151,7 +151,7 @@ def epoch_train(model, optimizer, batch_size, component,embed_layer,data, table_
         # print("label {}".format(label))
         loss = model.loss(score, label)
         # print("loss {}".format(loss.data.cpu().numpy()))
-        cum_loss += loss.data.cpu().numpy()*(ed - st)
+        cum_loss += loss.data.cpu().numpy()[0]*(ed - st)
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -328,47 +328,3 @@ def load_word_emb(file_name, load_used=False, use_small=False):
         with open('..\\alt\\glove\\usedwordemb.npy') as inf:
             word_emb_val = np.load(inf)
         return w2i, word_emb_val
-
-## used for training in train.py
-def epoch_pretrain(model, optimizer, batch_size, component,embed_layer,data, table_type):
-    model.train()
-    perm=np.random.permutation(len(data))
-    cum_loss = 0.0
-    st = 0
-
-    while st < len(data):
-        ed = st+batch_size if st+batch_size < len(perm) else len(perm)
-        q_seq, history,label = to_batch_seq(data, perm, st, ed)
-        q_emb_var, q_len = embed_layer.gen_x_q_batch(q_seq)
-        loss = 0.0
-        if component == "multi_sql":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "keyword":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "col":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "op":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "agg":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "root_tem":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "des_asc":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == 'having':
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        elif component == "andor":
-            decoded_output = model.autoencode(q_emb_var, q_len)
-        # score = model.forward(q_seq, col_seq, col_num, pred_entry,
-        #         gt_where=gt_where_seq, gt_cond=gt_cond_seq, gt_sel=gt_sel_seq)
-        # print("label {}".format(label))
-        loss = model.autoencodeloss(decoded_output, q_emb_var)
-        # print("loss {}".format(loss.data.cpu().numpy()))
-        cum_loss += loss.data.cpu().numpy()*(ed - st)
-        optimizer.zero_grad()
-        loss.backward()
-        optimizer.step()
-
-        st = ed
-
-    return cum_loss / len(data)

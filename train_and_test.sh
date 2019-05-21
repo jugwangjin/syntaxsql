@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # ## full + aug
@@ -32,7 +33,7 @@ pretrain=""
 DATE=`date '+%Y-%m-%d-%H-%M-%S'`
 
 data_root=generated_datasets\\generated_data${d_type}
-save_dir=${data_root}\\saved_models_hs=${hs}_tbl=${tbl}_${pretrain}${toy}_${DATE}
+save_dir=${data_root}\\saved_models_hs=${hs}_tbl=${tbl}_epoch${epoch}${pretrain}${toy}_${DATE}
 log_dir=${save_dir}\\train_log
 mkdir -p ${save_dir}
 mkdir -p ${log_dir}
@@ -162,13 +163,24 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
   ${pretrain} \
   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
   2>&1 & wait
+
+
+TEST_DATA=data\\dev.json
+CUDA_VISIBLE_DEVICES=0,1,2,3 python test.py \
+    --test_data_path  ${TEST_DATA} \
+    --models          ${save_dir} \
+    --output_path     ${save_dir}/dev_result.txt \
+    --history_type    full \
+    --table_type      std \
+     > ${SAVE_PATH}\\dev_result.out.txt 2>&1 & wait
+
 
 
 pretrain="--pretrain"
 DATE=`date '+%Y-%m-%d-%H-%M-%S'`
 
 data_root=generated_datasets\\generated_data${d_type}
-save_dir=${data_root}\\saved_models_hs=${hs}_tbl=${tbl}_${pretrain}_${DATE}
+save_dir=${data_root}\\saved_models_hs=${hs}_tbl=${tbl}_epoch${epoch}${pretrain}${toy}_${DATE}
 log_dir=${save_dir}\\train_log
 mkdir -p ${save_dir}
 mkdir -p ${log_dir}
@@ -299,6 +311,14 @@ CUDA_VISIBLE_DEVICES=0,1,2,3 python train.py \
   > "${log_dir}\\train_${d_type}_hs=${hs}_tbl=${tbl}_${module}_${DATE}.txt" \
   2>&1 & wait
 
+TEST_DATA=data\\dev.json
+CUDA_VISIBLE_DEVICES=0,1,2,3 python test.py \
+    --test_data_path  ${TEST_DATA} \
+    --models          ${save_dir} \
+    --output_path     ${save_dir}/dev_result.txt \
+    --history_type    full \
+    --table_type      std \
+     > ${SAVE_PATH}\\dev_result.out.txt 2>&1 & wait
 
 
 # export CUDA_VISIBLE_DEVICES=0,1,2,3

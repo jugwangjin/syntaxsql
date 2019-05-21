@@ -26,6 +26,12 @@ class RootTeminalPredictor(nn.Module):
                 num_layers=N_depth, batch_first=True,
                 dropout=0.3, bidirectional=True)
 
+        # decode
+        self.q_lstm_rev = nn.LSTM(input_size=N_word, hidden_size=N_h//2,
+                num_layers=N_depth, batch_first=True,
+                dropout=0.3, bidirectional=True)
+
+
         self.q_att = nn.Linear(N_h, N_h)
         self.hs_att = nn.Linear(N_h, N_h)
         self.rt_out_q = nn.Linear(N_h, N_h)
@@ -41,6 +47,30 @@ class RootTeminalPredictor(nn.Module):
         self.sigm = nn.Sigmoid()
         if gpu:
             self.cuda()
+
+
+    def encode(self, q_emb_var, q_len):
+        q_enc, _ = run_lstm(self.q_lstm, q_emb_var, q_len)
+        return q_enc
+
+    def decode(self, q_enc, q_len):
+        q_dec, _ = run_lstm(self.q_lstm_rev, q_enc, q_len)
+        return q_dec
+
+    def autoencode(self, q_emb_var, q_len):
+        encoded_input = self.encode(q_emb_var, q_len)
+        decoded_output = self.decode(encoded_input, q_len)
+        return decoded_output
+
+    def autoencodeloss(self, decoded_output, q_emb_var):
+        loss = 0
+        B = len(q_emb_var)
+        decoded_output = decoded_output
+        q_emb_var = q_emb_var
+        loss += F.mse_loss(decoded_output, q_emb_var)
+        return loss
+
+
 
     def forward(self, q_emb_var, q_len, hs_emb_var, hs_len, col_emb_var, col_len, col_name_len, gt_col):
         max_q_len = max(q_len)
@@ -81,6 +111,7 @@ class RootTeminalPredictor(nn.Module):
     def loss(self, score, truth):
         loss = 0
         data = torch.from_numpy(np.array(truth))
+        data = data.long()
         truth_var = Variable(data.cuda())
         loss = self.CE(score, truth_var)
 

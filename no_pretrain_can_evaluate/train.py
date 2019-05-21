@@ -33,11 +33,6 @@ if __name__ == '__main__':
                         help='number of epoch for training')
     parser.add_argument('--history_type', type=str, default='full', choices=['full','part','no'], help='full, part, or no history')
     parser.add_argument('--table_type', type=str, default='std', choices=['std','no'], help='standard, hierarchical, or no table info')
-
-
-    parser.add_argument('--pretrain', action='store_true',
-            help='If set, train data with pretrained weight.')
-
     args = parser.parse_args()
     use_hs = True
     if args.history_type == "no":
@@ -72,7 +67,6 @@ if __name__ == '__main__':
     word_emb = load_word_emb('glove\\glove.%dB.%dd.txt'%(B_word,N_word), \
             load_used=args.train_emb, use_small=USE_SMALL)
     print("finished load word embedding")
-
     #word_emb = load_concat_wemb('glove/glove.42B.300d.txt', "/data/projects/paraphrase/generation/para-nmt-50m/data/paragram_sl999_czeng.txt")
     model = None
     if args.train_component == "multi_sql":
@@ -100,20 +94,6 @@ if __name__ == '__main__':
     print_flag = False
     embed_layer = WordEmbedding(word_emb, N_word, gpu=GPU,
                                 SQL_TOK=SQL_TOK, trainable=args.train_emb)
-
-    if args.pretrain:
-        print("start pretraining")
-        best_acc = 0.0
-        for i in range(args.epoch//2):
-            print(('Epoch %d @ %s'%(i+1, datetime.datetime.now())))
-            print((' Loss = %s'%epoch_pretrain(
-                    model, optimizer, BATCH_SIZE,args.train_component,embed_layer,train_data,table_type=args.table_type)))
-            acc = epoch_acc(model, BATCH_SIZE, args.train_component,embed_layer,dev_data,table_type=args.table_type)
-            if acc > best_acc:
-                best_acc = acc
-                print("Save model...")
-                torch.save(model.state_dict(), "{}\\{}_models.dump".format(args.save_dir, args.train_component))
-
     print("start training")
     best_acc = 0.0
     for i in range(args.epoch):
@@ -124,5 +104,4 @@ if __name__ == '__main__':
         if acc > best_acc:
             best_acc = acc
             print("Save model...")
-            torch.save(model.state_dict(), "{}\\{}_models.dump".format(args.save_dir, args.train_component))
-            # torch.save(model.state_dict(), args.save_dir+"\\{}_models.dump".format(args.train_component))
+            torch.save(model.state_dict(), args.save_dir+"\\{}_models.dump".format(args.train_component))

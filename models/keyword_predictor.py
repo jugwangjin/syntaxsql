@@ -28,6 +28,12 @@ class KeyWordPredictor(nn.Module):
                 num_layers=N_depth, batch_first=True,
                 dropout=0.3, bidirectional=True)
 
+        # # decode
+        # self.q_lstm_rev = nn.LSTM(input_size=N_word, hidden_size=N_h//2,
+        #         num_layers=N_depth, batch_first=True,
+        #         dropout=0.3, bidirectional=True)
+
+
         self.q_num_att = nn.Linear(N_h, N_h)
         self.hs_num_att = nn.Linear(N_h, N_h)
         self.kw_num_out_q = nn.Linear(N_h, N_h)
@@ -49,6 +55,28 @@ class KeyWordPredictor(nn.Module):
         self.sigm = nn.Sigmoid()
         if gpu:
             self.cuda()
+
+    def encode(self, q_emb_var, q_len):
+        q_enc, _ = run_lstm(self.q_lstm, q_emb_var, q_len)
+        return q_enc
+
+    def decode(self, q_enc, q_len):
+        q_dec, _ = run_lstm(self.q_lstm_rev, q_enc, q_len)
+        return q_dec
+
+    def autoencode(self, q_emb_var, q_len):
+        encoded_input = self.encode(q_emb_var, q_len)
+        decoded_output = self.decode(encoded_input, q_len)
+        return decoded_output
+
+    def autoencodeloss(self, decoded_output, q_emb_var):
+        loss = 0.0
+        B = len(q_emb_var)
+        decoded_output = decoded_output
+        q_emb_var = q_emb_var
+        loss += F.mse_loss(decoded_output, q_emb_var)
+        return loss
+
 
     def forward(self, q_emb_var, q_len, hs_emb_var, hs_len, kw_emb_var, kw_len):
         max_q_len = max(q_len)
@@ -110,6 +138,7 @@ class KeyWordPredictor(nn.Module):
         #loss for the key word number
         truth_num = [len(t) for t in truth] # double check to exclude select
         data = torch.from_numpy(np.array(truth_num))
+        data = data.long()
         truth_num_var = Variable(data.cuda())
         loss += self.CE(kw_num_score, truth_num_var)
         #loss for the key words
